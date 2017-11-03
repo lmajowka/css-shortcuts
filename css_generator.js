@@ -1,14 +1,37 @@
 const DYNAMIC_CLASSES = require('./dynamic_classes');
 
-class cssGenerator{
-	
-  constructor(){
-  	this.css = '';
+class CSSGenerator{
+
+  constructor(html){
+  	this.matchedClasses = [];
+    this.html = html;
   }
 
-  createOutput(html){
-    this.buildCss(html);	
-    fs.writeFile('./output.css', this.css, function (err) {   
+  matchClasses(){
+
+    DYNAMIC_CLASSES.forEach((dynamicClass) => {
+  	  let searchStr = `${dynamicClass['shortcut']}([0-9])+`;
+  	  let strRegExPattern = '\\b'+searchStr +'\\b'; 
+      let matchedClasses = this.html.match(new RegExp(strRegExPattern,'g')) || [];
+  
+      CSSGenerator.matchedClasses = CSSGenerator.matchedClasses.concat(matchedClasses.filter(n => true)); 
+    });
+    
+  }
+
+  static readFile(file){
+    fs.readFile(file, 'utf8', function (err, html) {
+      if (err){
+        console.log(err);
+      return;
+      }
+      let cssGenerator = new CSSGenerator(html);
+      cssGenerator.matchClasses();
+    });
+  }
+
+  static createOutput(){
+    fs.writeFile('./css-shortcuts.css', this.css, function (err) {   
       if (err){
         console.log(err);
         return;
@@ -16,21 +39,27 @@ class cssGenerator{
     });
   }
 
-  buildCss(html){
+  static buildCss(){
 
-    DYNAMIC_CLASSES.forEach((dynamicClass) => {
-  	  let searchStr = `${dynamicClass['shortcut']}([0-9])+`;
-  	  let strRegExPattern = '\\b'+searchStr +'\\b'; 
-      let matchedClasses = html.match(new RegExp(strRegExPattern,'g'));	
-      if (!matchedClasses) return;
-      matchedClasses.forEach((matchedClass) => {
-        let value = matchedClass.match(/[0-9]+/);	 
-        this.css += `.${dynamicClass['shortcut']}${value}{${dynamicClass['className']}: ${value}px;}`;		
-      });
+    if (CSSGenerator.matchedClasses == []) return;
+    CSSGenerator.matchedClasses.sort().forEach((matchedClass) => {
+      let shortcut = matchedClass.match(/[a-z]+/);  
+      let dynamicClass = DYNAMIC_CLASSES.find((c) => c.shortcut == shortcut);
+      let value = matchedClass.match(/[0-9]+/);
+      let instacedShortcut = `.${dynamicClass['shortcut']}${value}`;
+      if (!CSSGenerator.generatedClasses[instacedShortcut]){
+        CSSGenerator.css += `${instacedShortcut}{${dynamicClass['className']}: ${value}px;}`;   
+        CSSGenerator.generatedClasses[instacedShortcut] = true;
+      } 
     });
+    CSSGenerator.createOutput();
     
   }
 
 }
 
-module.exports = cssGenerator;
+CSSGenerator.matchedClasses = [];
+CSSGenerator.css = '';
+CSSGenerator.generatedClasses = {};
+
+module.exports = CSSGenerator;

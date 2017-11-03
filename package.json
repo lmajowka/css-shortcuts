@@ -1,22 +1,27 @@
 {
   "name": "css-shortcuts",
-  "version": "0.0.0",
-  "description": "Generate CSS shortcuts to speed up you html development",
+  "version": "1.0.0",
+  "description": "CSS shortcuts generator to speed up HTML development",
   "main": "app.js",
+  "dependencies": {
+    "latest-version": "^3.1.0"
+  },
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/lmajowka/css-shortcuts.git"
+    "url": "git+https://github.com/lmajowka/css-shortcuts.git"
   },
   "keywords": [
     "CSS",
-    "shortcuts"
+    "Shortcuts"
   ],
-  "author": "Leo Majowka (http://abcoded.com/about-me/)",
-  "license": "BSD-2-Clause",
+  "author": "Leo Majowka (http://www.abcoded.com)",
+  "license": "ISC",
   "bugs": {
     "url": "https://github.com/lmajowka/css-shortcuts/issues"
-  }
+  },
+  "homepage": "https://github.com/lmajowka/css-shortcuts#readme"
 }

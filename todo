@@ -3,3 +3,4 @@ write better readme
 run as command
 read folders recursively
 watch for changes
+avoid multiple calls to #buildCss

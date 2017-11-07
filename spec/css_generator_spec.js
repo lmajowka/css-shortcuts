@@ -4,7 +4,7 @@ describe('CSSGenerator', () => {
 
   describe('#matchClasses', () => {
 
-    describe('with 	one file', () => {
+    describe('with one file', () => {
 
       beforeEach(function(done){
       	CSSGenerator.startReading(1, done);
@@ -32,11 +32,12 @@ describe('CSSGenerator', () => {
       	CSSGenerator.readFile('./examples/example4.html');
       });
 
-      let exampleClasses = [ 'ml2', 'ml4', 'mr1', 'mr3', 'mr5', 'ml3', 'ml5', 'mr2', 'mr4', 'mr6' ]	
 
       it('stored the right matched classes', (done) => {
 
-        expect(CSSGenerator.matchedClasses).toEqual(exampleClasses);
+        expect(CSSGenerator.matchedClasses).toContain('ml2');
+        expect(CSSGenerator.matchedClasses).toContain('ml3');
+        expect(CSSGenerator.matchedClasses).not.toContain('ml30');
         done();
       
       });

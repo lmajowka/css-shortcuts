@@ -11,7 +11,7 @@ describe('CSSGenerator', () => {
       	CSSGenerator.readFile('./examples/example.html');
       });
 
-      let exampleClasses = [ 'm40', 'ml10', 'ml20', 'mr15', 'mr25', 'mt20', 'mt4', 'mb6', 'mb13', 'p4', 'pl10', 'pb30', 'fs30', 'fs22', 'fs34', 'fs14' ];
+      let exampleClasses = [ 'fs14','fs22','fs30','fs34','m40','mb13','mb6','ml10','ml20','mr15','mr25','mt20','mt4','p4','pb30','pl10' ]
 
       it('stored the right matched classes', (done) => {
 
@@ -42,6 +42,21 @@ describe('CSSGenerator', () => {
       
       });
       
+    });
+
+  });
+
+  describe('#buildCss', () =>{
+
+    beforeEach(function(done){
+        CSSGenerator.reset(); 
+        CSSGenerator.startReading(1 , done);
+        CSSGenerator.readFile('./examples/example2.html');
+    });
+
+    it('write unique class definition on css', (done) => {
+      expect(CSSGenerator.css).toContain('.ml2{margin-left: 2px;}');
+      done();
     });
 
   });

@@ -35,9 +35,9 @@ describe('CSSGenerator', () => {
 
       it('stored the right matched classes', (done) => {
 
-        expect(CSSGenerator.matchedClasses).toContain('ml2');
-        expect(CSSGenerator.matchedClasses).toContain('ml3');
-        expect(CSSGenerator.matchedClasses).not.toContain('ml30');
+        expect(CSSGenerator.matchedClasses).toContain('ml2'); //class from example3
+        expect(CSSGenerator.matchedClasses).toContain('ml3'); //class from example4
+        expect(CSSGenerator.matchedClasses).not.toContain('ml30'); //not present in neither files
         done();
       
       });

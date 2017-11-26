@@ -7,17 +7,15 @@ describe('CSSGenerator', () => {
     describe('with one file', () => {
 
       beforeEach(function(done){
-      	CSSGenerator.startReading(1, done);
-      	CSSGenerator.readFile('./examples/example.html');
+      	CSSGenerator.readFile('./examples/example.html').then(done);
       });
 
-      let exampleClasses = [ 'fs14','fs22','fs30','fs34','m40','mb13','mb6','ml10','ml20','mr15','mr25','mt20','mt4','p4','pb30','pl10' ]
+      let exampleClasses = [ 'm40', 'ml10', 'ml20', 'mr15','mr25','mt20','mt4','mb6','mb13','p4','pl10','pb30','fs30','fs22','fs34','fs14' ]
 
       it('stored the right matched classes', (done) => {
 
         expect(CSSGenerator.matchedClasses).toEqual(exampleClasses);
         done();
-      
       });
 
     });
@@ -27,9 +25,9 @@ describe('CSSGenerator', () => {
 
       beforeEach(function(done){
       	CSSGenerator.reset();	
-      	CSSGenerator.startReading(2	, done);
-      	CSSGenerator.readFile('./examples/example3.html');
-      	CSSGenerator.readFile('./examples/example4.html');
+      	let p1 = CSSGenerator.readFile('./examples/example3.html');
+        let p2 = CSSGenerator.readFile('./examples/example4.html');
+        Promise.all([p1,p2]).then(done);
       });
 
 
@@ -50,8 +48,7 @@ describe('CSSGenerator', () => {
 
     beforeEach(function(done){
         CSSGenerator.reset(); 
-        CSSGenerator.startReading(1 , done);
-        CSSGenerator.readFile('./examples/example2.html');
+        CSSGenerator.readFile('./examples/example2.html').then(() => {CSSGenerator.buildCss(); done()});
     });
 
     it('write unique class definition on css', (done) => {
